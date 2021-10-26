@@ -1,32 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "../../Components/Button/button";
+import InputText from "../../Components/imput/imput";
 
 const Register = () => {
-  const history = useHistory();
+  const [verifyInput, setVerifyInput] = useState(false);
+  const [verifyPassword, setVerifyPassword] = useState(false);
 
-  const criarNovoUsuario = (e) => {
+  const [userName, setUserName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  const passwordRegis = (e) => {
     e.preventDefault();
-    console.log("cadastrar user");
+    if (userEmail === " " || userPassword === " " || userName === " ") {
+      setVerifyInput(true);
+    }
+    if (userPassword.length < 6) {
+      setVerifyPassword(true);
+    } else {
+      console.log("entrou no else");
+    }
 
-    //todos deram bom ? navega para menu
-    history.push("/menu");
+    //console.log("cadastrar user")
   };
 
   return (
     <>
-       <h1>Cadastro</h1>
-      <form>
-        <input type="name" name="name" placeholder="Nome" />
-        <select name="role">
-          <option value="chef">Chefe</option>
-          <option value="waiter">Atendente</option>
-        </select>
-        <input type="email" name="email" placeholder="E-mail" />
-        <input type="password" name="password" placeholder="Senha" />
-        <button type="submit" onClick={criarNovoUsuario}>
-          entrar
-        </button>
-      </form>
+      <section className="container">
+        <div className="container-form">
+          <h1>Cadastro</h1>
+        </div>
+        <form className="formulario">
+          <InputText
+            InputType="text"
+            inputPlaceholder=" Digite seu Nome"
+            inputValue={userName}
+            inputOnChange={(event) => setUserName(event.target.value)}
+          />
+
+          <InputText
+            inputType="text"
+            inputPlaceholder=" Digite seu Email"
+            inputValue={userEmail}
+            inputOnChange={(event) => setUserEmail(event.target.value)}
+          />
+
+          <InputText
+            InputType="password"
+            inputPlaceholder=" Senha"
+            inputValue={userPassword}
+            inputOnChange={(event) => setUserPassword(event.target.value)}
+          />
+
+          <Button
+            buttonOnClick={(e) => passwordRegis(e)}
+            buttonClass="btn-form"
+          >
+            entrar
+          </Button>
+          {verifyPassword ? (
+            <div className="erro">
+              <h2>preencha o campo corretamente</h2>
+            </div>
+          ) : null}
+          {verifyInput ? (
+            <div className="erro">
+              <h2>preencha o campo corretamente</h2>
+            </div>
+          ) : null}
+          
+        </form>
+      </section>
       <Link to="/">Tenho Conta</Link>
     </>
   );
